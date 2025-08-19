@@ -1,36 +1,233 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# GIS/AI 포트폴리오 웹사이트 – 요구사항 명세서 (개발자 전달용)
 
-## Getting Started
+> **목적**: GIS와 인공지능 분야 전문성을 모던하고 신뢰감 있게 보여주는 개인/팀 포트폴리오 웹사이트 구축
+>
+> **핵심가치**: 신뢰성(레퍼런스/수치/코드), 가독성(명확한 정보구조), 상호작용(지도/데모), 성능(빠른 로딩)
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 1) 프로젝트 개요
+
+* **타깃 사용자**: 공공/엔터프라이즈 발주처, 연구기관, SI 파트너, 테크 리크루터
+* **핵심 KPI**
+
+  * 문의 전환율(CTA 클릭률) ≥ 2.5%
+  * LCP ≤ 2.5s(모바일 4G 기준), CLS ≤ 0.1, Lighthouse Performance ≥ 90
+  * 프로젝트/케이스스터디 평균 체류시간 ≥ 90초
+* **기본 스택(제안)**: Next.js 14(SSR/SSG 혼합) + Tailwind + Mapbox GL JS/Leaflet + Headless CMS(예: Contentful/Strapi/Sanity) + Vercel/CloudFront
+
+---
+
+## 2) 정보구조(IA) / 사이트맵
+
+* **최상위 내비게이션**: 홈(Home), 프로젝트(Projects), 연구·논문(Research), 블로그(Blog), 데이터·모델(Data·Models), 데모(Demos), 소개(About), 연락(Contact)
+* **푸터**: 소셜 링크(GitHub/LinkedIn/ResearchGate), 이메일, 저작권, 개인정보 처리방침, 이용약관, 사이트맵, RSS
+
+---
+
+## 3) 페이지별 기능 요구사항
+
+### 3.1 홈(Home)
+
+* 히어로 섹션: 한 줄 가치제안(USP) + 대표 이미지/지도 배경 + 주요 CTA(프로젝트 보기, 문의하기)
+* 핵심 하이라이트: 대표 프로젝트 3개 카드, 연구 성과 요약, 보유 기술 스택 아이콘
+* 추천 콘텐츠: 최신 글 3개, 최신 데모 1개
+
+### 3.2 프로젝트 목록(Projects)
+
+* 카드 그리드(썸네일, 제목, 요약, 태그, 기간, 역할)
+* 필터/정렬: 분야(GIS/AI/도시/재난), 기술(딥러닝/시계열/라이다 등), 연도, 기관
+* 검색(제목/태그/요약 전문)
+* 페이지네이션 또는 무한스크롤
+
+### 3.3 프로젝트 상세(Project Detail / Case Study)
+
+* 구조: 개요 → 문제정의 → 접근방법(모델/데이터/아키텍처) → 결과(지표/지도/시각화) → 임팩트 → 역할/기여 → 참고/링크(코드/논문)
+* GIS 인터랙티브: 지도 컴포넌트(벡터/래스터 레이어 토글, 범례, 축척바, 좌표표시, 전체화면)
+* 성능 지표: 정확도/IoU/Recall 등 표/차트(다운로드 가능한 PNG/SVG)
+* 미디어: 이미지/비디오(라이트박스), 코드 스니펫(복사 버튼)
+* CTA: 유사 과업 문의 버튼(모달 폼 연결)
+
+### 3.4 연구·논문(Research)
+
+* 발표/논문/특허 목록(연도/저자/학회/DOI 링크)
+* BibTeX/APA 인용 복사 버튼, PDF 파일(권한 범위 내) 다운로드
+
+### 3.5 블로그(Blog)
+
+* 카테고리/태그, 검색, 목차 자동 생성(페이지 내 Heading 기반)
+* 수식(KaTeX), 코드 하이라이트, 표, 이미지 캡션 지원
+* RSS/Atom 피드 자동 생성
+
+### 3.6 데이터·모델(Data · Models)
+
+* **Dataset Card**: 이름, 설명, 라이선스, 크기, 샘플 미리보기, 다운로드/요청 링크
+* **Model Card**: 태스크, 입력/출력, 학습데이터, 한계/바이어스, 지표, 추론 리소스
+* 버전 관리: vX.Y(체인지로그), 모델/데이터 간 참조 링크
+
+### 3.7 데모(Demos)
+
+* 데모 카드: 사용법, 제한사항 안내
+* API/서버 연동형 데모: 비동기 요청(REST/WebSocket) + 로딩/에러 처리 + 레이트리미트 안내
+* GIS 데모: 시공간 슬라이더, 레이어 토글, 좌표 선택, GeoJSON 업로드(검증)
+
+### 3.8 소개(About)
+
+* 프로필/경력, 핵심역량(도메인/기술), 수상/자격, 협업사 로고(그리드), 연락 CTA
+
+### 3.9 연락(Contact)
+
+* 폼: 이름/이메일/기관/요청유형(프로젝트/자문/강의)/메시지, 파일첨부(선택)
+* 검증: reCAPTCHA v3, 서버 측 유효성 검사, 성공/실패 피드백
+* 자동 회신(템플릿), Slack/Webhook 알림(운영자)
+
+---
+
+## 4) 공통 기능 요구사항
+
+* 반응형(모바일 우선), 다크/라이트 모드(사용자 토글 + OS 선호 감지)
+* i18n: KO/EN 다국어, 라우팅 분리(`/ko`, `/en`), hreflang 메타
+* 성능 최적화: 이미지 자동 리사이즈/서빙(WebP/AVIF), 코드 스플리팅, 프리패치
+* 접근성: WCAG 2.2 AA, 키보드 포커스, ARIA 레이블, 대비 기준 충족
+* 공유 메타: OpenGraph/Twitter 카드, 구조화 데이터(Schema.org: Article/BlogPosting/Person/Project)
+* 검색: 클라이언트(Lunr) 또는 호스팅(Algolia) 선택 가능
+* 태그 시스템: 다중 선택 필터, URL 쿼리 동기화
+* 에러 페이지: 404/500 커스텀, Sentry 연동(옵션)
+
+---
+
+## 5) GIS 기능 상세(프론트)
+
+* 지도 라이브러리: Mapbox GL JS(권장) 또는 Leaflet
+* 기본 기능: 레이어(벡터/타일) 토글, 범례, 스케일바, 마우스 위치 좌표, 줌 컨트롤, 전체 화면
+* 데이터 포맷: GeoJSON, MVT, raster tile. 최대 업로드(클라이언트) 10MB, validate & 샘플링
+* 시계열 컨트롤: 시점 슬라이더(듀얼 핸들), 재생/일시정지, 현재 프레임 라벨
+* 3D(선택): CesiumJS/Mapbox 3D 빌딩, 경사 음영(타일)
+
+---
+
+## 6) AI 데모/백엔드 연동
+
+* API 규격: `POST /api/infer` (JSON) → `{id, status, result_url|payload}`
+* 비동기 폴링: `GET /api/jobs/{id}` (상태: queued/running/succeeded/failed)
+* 입력 검증: 파일 확장자/크기 제한, 악성 파일 차단(MIME sniffing)
+* 레이트리미트: IP당 N req/min, 429 처리
+* 로깅: 요청/응답 요약, 추론시간, 에러코드, 사용자 동의한 데이터만 저장
+* 취소/타임아웃: 60s 초과 시 타임아웃, 사용자 취소 지원
+
+---
+
+## 7) CMS 콘텐츠 모델(Headless)
+
+**공통 필드**: slug, 제목, 요약, 본문(RichText/MDX), 태그\[], 썸네일, 작성자, 공개상태, 공개일, 업데이트일
+
+* **Project**: 기간, 역할, 고객/기관, 기술스택\[], 문제정의, 접근방법, 결과지표\[], 지도소스\[], 깃허브/논문 링크
+* **CaseStudy**(선택): 스토리텔링 필드(문제→해결→성과), 이미지 갤러리\[]
+* **Article**: 카테고리, 목차 자동 생성 토글
+* **Dataset**: 라이선스, 크기, 샘플 미리보기, 다운로드/요청 URL, 버전
+* **Model**: 태스크, 입력/출력, 학습데이터 요약, 한계/바이어스, 지표, 버전, 데모 연결
+* **Publication**: 저자\[], 학회/저널, DOI, BibTeX, PDF
+* **Person**: 이름, 직함, 소개, 아바타, 소셜 링크
+
+---
+
+## 8) 보안/개인정보/법무
+
+* TLS(HTTPS) 강제, HSTS, CSP(스크립트 화이트리스트), XSS/CSRF 대응
+* 쿠키: SameSite=Lax, 보안 플래그, 최소 보관
+* 개인정보 처리방침/이용약관 페이지 제공, 폼 수집 항목 최소화
+* 로그 보관 정책: PII 제거, 90일 보관 기본
+
+---
+
+## 9) 성능·SEO·분석
+
+* 성능 예산: 홈 JS 번들 ≤ 200KB(gzip), 이미지 LCP 리소스 ≤ 100KB
+* 사전 렌더링: 정적 SSG + ISR(갱신 주기 1h), OG 이미지 자동 생성(서버리스)
+* SEO: 동적 sitemap.xml, robots.txt, canonical/hreflang, 구조화데이터
+* 분석: GA4, 이벤트(CTA 클릭, 파일다운로드, 데모실행), 프라이버시 모드
+
+---
+
+## 10) 운영/배포/관제
+
+* CI/CD: GitHub Actions – 린트/테스트/빌드/프리뷰/프로덕션
+* 환경변수: API 키/Mapbox 토큰/CMS 토큰(프로젝트·스테이징·운영 분리)
+* 모니터링: Uptime(헬스체크), 에러(Sentry), 성능(Web Vitals 수집)
+* 백업: CMS 콘텐트 스냅샷 주 1회, 환경변수 백업(암호화)
+
+---
+
+## 11) 컴포넌트 목록(디자인 시스템)
+
+* 버튼(프라이머리/세컨더리/링크), 카드(프로젝트/데모/논문), 배지(태그)
+* 내비게이션 바, 푸터, 검색바/오토컴플릿, 토글(다크모드), 페이징
+* 지도 위젯(레전드, 레이어 토글, 시간 슬라이더), 모달, 토스트, 탭, 아코디언
+
+---
+
+## 12) 테스트 & 브라우저 지원
+
+* 테스트: 유닛(유틸/컴포넌트), E2E(홈→문의 전환, 검색/필터, 데모 실행), 접근성(lighthouse/axe)
+* 지원 브라우저: 최신 Chrome/Edge/Safari/Firefox(최근 2버전), iOS 16+, Android 11+
+
+---
+
+## 13) 수락 기준(샘플 체크리스트)
+
+* [ ] LCP ≤ 2.5s(모바일), CLS ≤ 0.1, Lighthouse ≥ 90/90/100/100(Perf/Best/SEO/A11y)
+* [ ] 홈·프로젝트·연구·블로그·데이터·모델·데모·연락 페이지 정상 동작
+* [ ] 지도 레이어 토글/범례/좌표표시/시간 슬라이더 정상 동작, 모바일 제스처 대응
+* [ ] 검색/필터/태그 URL 동기화, 새로고침 후 상태 유지
+* [ ] 폼 검증/스팸차단, Slack/Webhook 알림 정상, 자동회신 메일 발송
+* [ ] i18n(한/영) 전환 시 라우팅·메타태그·hreflang 반영
+* [ ] 구조화 데이터 검증 통과, sitemap/robots 자동 생성
+
+---
+
+## 14) 일정/산출물(핵심)
+
+* 설계(1주): IA/와이어프레임/컴포넌트 인벤토리/디자인 토큰
+* 개발(2\~3주): 페이지/컴포넌트/지도/데모 연동, CMS 스키마
+* 검수(1주): 접근성/성능/SEO, UAT, 수락 테스트
+* 산출물: 소스코드(repo), 디자인 토큰/가이드, CMS 스키마 정의서, 운영 가이드, 테스트 리포트
+
+---
+
+## 15) 향후 확장(옵션)
+
+* 다국어 추가(JP/ES), 멀티 저자/공동연구자 프로필, 온라인 상담 예약 캘린더
+* 논문/프로젝트 자동 임포트(Google Scholar/ORCID), Algolia 검색
+* MLOps 대시보드(실험/모델 버전/배포 상태) 임베딩
+
+---
+
+### 부록 A. API 예시 스펙(요약)
+
+```http
+POST /api/infer
+Content-Type: application/json
+{
+  "task": "wildfire-risk",
+  "inputs": {"lat": 37.5, "lon": 127.1, "date": "2025-08-01"}
+}
+→ 202 Accepted {"id":"job_abc"}
+
+GET /api/jobs/{id}
+→ 200 {"status":"succeeded", "result_url":"/results/job_abc.json"}
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 부록 B. CMS 필드(샘플 JSON)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```json
+{
+  "Project": {
+    "title": "도시 홍수 위험 예측",
+    "period": "2024-2025",
+    "roles": ["PM", "ML Engineer"],
+    "tech": ["PyTorch", "Mapbox", "Airflow"],
+    "metrics": {"IoU": 0.62, "F1": 0.78},
+    "links": {"code": "https://github.com/...", "paper": "https://doi.org/..."}
+  }
+}
+```
