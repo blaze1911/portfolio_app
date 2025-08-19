@@ -8,7 +8,7 @@ export default function Home() {
         <div className="px-4 sm:px-12 py-12 sm:py-20 text-center">
           <p className="text-xs tracking-widest uppercase text-neutral-500">GIS • AI • Data</p>
           <h1 className="mt-3 text-3xl sm:text-5xl font-semibold tracking-tight">
-            공간지능과 인공지능으로 문제를 정의하고 해결합니다
+            <span className="text-blue-600 dark:text-blue-400">공간지능</span>과 <span className="text-blue-600 dark:text-blue-400">인공지능</span>으로 문제를 정의하고 해결합니다
           </h1>
           <p className="mt-4 text-neutral-700 dark:text-neutral-300 max-w-2xl mx-auto prose-contrast">
             신뢰할 수 있는 수치와 사례 중심의 포트폴리오. 지도 상호작용과 실험 데모로 결과를 투명하게 보여드립니다.
